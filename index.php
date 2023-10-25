@@ -6,6 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checklist App</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+        .modal {
+            display: none; /* Inicialmente oculto */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5); /* Fondo oscuro semitransparente */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            width: 80%;
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 20px;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -18,37 +38,33 @@
       <div class="container px-1">
         <h2 class="font-bold text-xl text-white rounded-lg py-1 text-center bg-blue-500">Crear Tarea</h2>
 
-        <form id="formulario-tarea" class="mt-2 p-2 bg-gray-50 rounded-lg">
-          <label for="titulo" class="block text-sm font-medium leading-6 text-gray-900">Titulo</label>
-          <input type="text" id="titulo" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Título" required />
+        <form name="formularioTarea" class="mt-2 p-2 bg-gray-50 rounded-lg"  action="index.php" method="post" >
+          <label for="txtTitle" class="block text-sm font-medium leading-6 text-gray-900">Titulo</label>
+          <input type="text" name="txtTitle" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Título"  >
+
 
           <label for="titulo" class="mt-2 block text-sm font-medium leading-6 text-gray-900">Descripcion</label>
-          <textarea id="descripcion" placeholder="Descripción" class="block w-full rounded-md border-0 py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+          <textarea name="descripcion" placeholder="Descripción" class="block w-full rounded-md border-0 py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
 
           <fieldset class="mt-2">
             <legend class="text-sm font-semibold leading-6 text-gray-900">Estado</legend>
-            <div class="flex items-center gap-x-3">
-              <input id="rbhacer" name="por hacer" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
-              <label for="rbhacer" class="block text-sm font-normal leading-6 text-gray-900">Por
-                hacer</label>
-            </div>
+            <select name="ddlTaskState" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+            <?php
+              require_once("class/Parameter.php");
+              $objParameter = new Parameter();
+              $listParameter = $objParameter->GetParameter("ESTADOS DE TAREAS");
+              foreach ($listParameter as $parameter) {
+                echo "<option value='" . $parameter['ID_PARAMETER'] . "'>" .  $parameter['PARA_NAME'] . "</option>";
+              }
 
-            <div class="flex items-center gap-x-3">
-              <input id="rbcurso" name="en progreso" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
-              <label for="rbcurso" class="block text-sm font-normal leading-6 text-gray-900">En
-                curso</label>
-            </div>
-
-            <div class="flex items-center gap-x-3">
-              <input id="rbterminada" name="terminada" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
-              <label for="rbterminada" class="block text-sm font-normal leading-6 text-gray-900">Terminada</label>
-            </div>
+            ?>
+          </select><br>
           </fieldset>
 
-          <label for="">Fecha de compromiso</label>
-          <input type="datetime-local" id="fecha-compromiso" required /><br />
-          <label for="">Responsable</label>
-          <select name="userResponse" id="userResponse" required>
+          <label for="" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >Fecha de compromiso</label>
+          <input type="datetime-local" name="fechaCompromiso"  /><br />
+          <label for="" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >Responsable</label>
+          <select name="userResponse" id="userResponse" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
             <option value="" disabled selected>--- Seleccione una ---</option>
             <?php
               require_once("class/Users.php");
@@ -61,8 +77,8 @@
             ?>
           </select><br>
 
-          <label for="">Categorias</label>
-          <select name="taskCategorie" id="taskCategorie" required>
+          <label for="" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >Categorias</label>
+          <select name="taskCategorie" id="taskCategorie" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
             <option value="" disabled selected>--- Seleccione una ---</option>
             <?php
               require_once("class/Categorie.php");
@@ -75,7 +91,8 @@
             ?>
           </select><br>
 
-          <button type="button" onclick="agregarTarea()">Agregar Tarea</button>
+          <input type='submit' name='addTask' value='Agregar Tarea' class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+
         </form>
         <div id="lista-tareas"></div>
       </div>
@@ -130,10 +147,75 @@
     <button>Agregar Usuarios</button>
   </div>
 
+  <button data-modal-target="defaultModal" data-modal-toggle="defaultModal"  id="abrirModal">Abrir Modal</button>
+
+    <!-- Modal -->
+    <div id="miModal" class="modal">
+      <div class="modal-content">
+        <div class="flex items-start justify-between p-4 border-b rounded-t">
+          <h3 class="text-xl font-semibold text-gray-900 ">Modificar tarea</h3>
+          <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+            <span id="cerrarModal" style="cursor: pointer;">&times;</span>    
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+        <div class="p-6 space-y-6">
+            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+            </p>
+            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
+            </p>
+        </div>
+      </div>
+  </div>
+
+
+
+</div>
+
   <script src="script.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {});
+
+    var botonAbrir = document.getElementById("abrirModal");
+        var modal = document.getElementById("miModal");
+        var botonCerrar = document.getElementById("cerrarModal");
+
+        botonAbrir.onclick = function() {
+            modal.style.display = "block"; // Mostrar el modal al hacer clic en el botón
+        }
+
+        botonCerrar.onclick = function() {
+            modal.style.display = "none"; // Cerrar el modal al hacer clic en la "X"
+        }
   </script>
 </body>
 
 </html>
+
+
+<?php
+  if(array_key_exists('addTask', $_POST))
+  {
+    $miArray = $_POST;
+
+    // Utilizar var_dump para ver los valores
+    var_dump($miArray);
+
+    $titulo = $_POST['txtTitle'];
+    $descripcion = $_POST['descripcion'];
+    $estado = $_POST['ddlTaskState'];
+    $fechaCompromiso = $_POST['fechaCompromiso'];
+    $responsable = $_POST['userResponse'];
+    $categoria = $_POST['taskCategorie'];
+
+    echo $titulo . "<br>";
+    echo $descripcion . "<br>";
+    echo $estado . "<br>";
+    echo $fechaCompromiso . "<br>";
+    echo $responsable . "<br>";
+    echo $categoria . "<br>";
+  }
+
+?>
