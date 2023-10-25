@@ -35,7 +35,7 @@
             $resultado = $consulta->fetch_all(MYSQLI_ASSOC);
 
             if(!$resultado){
-                echo "Error al consultar las noticias";
+                echo "Error al consultar las noticias ";
             }
             else{
                 return $resultado;
