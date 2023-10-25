@@ -8,7 +8,7 @@
         }
 
         public function GetTasks(){
-            $instruccion = "CALL SP_USER()";
+            $instruccion = "CALL SP_TASK()";
             
             $consulta = $this->_db->query($instruccion);
             $resultado = $consulta->fetch_all(MYSQLI_ASSOC);

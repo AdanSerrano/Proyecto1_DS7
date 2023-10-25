@@ -101,6 +101,21 @@
     <div class="basis-1/4 rounded-lg">
       <div class="container px-1">
         <h2 class="font-bold text-xl text-white rounded-lg py-1 text-center bg-red-500">Por Hacer</h2>
+        <div class="mt-2 p-2 bg-gray-50 rounded-lg">
+          <?php
+             require_once("class/Tasks.php");
+             $objTasks = new Tasks();
+             $listTasks = $objTasks->GetTasks();
+             foreach ($listTasks as $tasks) {
+                if($tasks['TASK_CATEGORIE_ID'] == 1){
+                  echo "<label for='ckCategories'>" . $tasks['TASK_NAME'] ."</label><br>";
+
+                  
+                }
+             }
+
+          ?>
+        </div>
       </div>
     </div>
 
