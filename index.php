@@ -8,13 +8,13 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
         .modal {
-            display: none; /* Inicialmente oculto */
+            display: none; 
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5); /* Fondo oscuro semitransparente */
+            background-color: rgba(0,0,0,0.5);
         }
 
         .modal-content {
@@ -91,7 +91,7 @@
             ?>
           </select><br>
 
-          <input type='submit' name='addTask' value='Agregar Tarea' class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+          <input type='submit' name='addTask' value='Agregar Tarea' class="w-full block bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
 
         </form>
         <div id="lista-tareas"></div>
@@ -183,11 +183,11 @@
         var botonCerrar = document.getElementById("cerrarModal");
 
         botonAbrir.onclick = function() {
-            modal.style.display = "block"; // Mostrar el modal al hacer clic en el botón
+            modal.style.display = "block"; 
         }
 
         botonCerrar.onclick = function() {
-            modal.style.display = "none"; // Cerrar el modal al hacer clic en la "X"
+            modal.style.display = "none";
         }
   </script>
 </body>
@@ -200,9 +200,6 @@
   {
     $miArray = $_POST;
 
-    // Utilizar var_dump para ver los valores
-    var_dump($miArray);
-
     $titulo = $_POST['txtTitle'];
     $descripcion = $_POST['descripcion'];
     $estado = $_POST['ddlTaskState'];
@@ -210,12 +207,9 @@
     $responsable = $_POST['userResponse'];
     $categoria = $_POST['taskCategorie'];
 
-    echo $titulo . "<br>";
-    echo $descripcion . "<br>";
-    echo $estado . "<br>";
-    echo $fechaCompromiso . "<br>";
-    echo $responsable . "<br>";
-    echo $categoria . "<br>";
+    require_once("class/Tasks.php");
+      $objTasks = new Tasks();
+      $result = $objTasks->PostTasks($titulo, $descripcion, $estado, $fechaCompromiso, $responsable, $categoria);
   }
 
 ?>
