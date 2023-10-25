@@ -29,12 +29,14 @@
             <legend class="text-sm font-semibold leading-6 text-gray-900">Estado</legend>
             <div class="flex items-center gap-x-3">
               <input id="rbhacer" name="por hacer" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
-              <label for="rbhacer" class="block text-sm font-normal leading-6 text-gray-900">Por hacer</label>
+              <label for="rbhacer" class="block text-sm font-normal leading-6 text-gray-900">Por
+                hacer</label>
             </div>
 
             <div class="flex items-center gap-x-3">
               <input id="rbcurso" name="en progreso" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
-              <label for="rbcurso" class="block text-sm font-normal leading-6 text-gray-900">En curso</label>
+              <label for="rbcurso" class="block text-sm font-normal leading-6 text-gray-900">En
+                curso</label>
             </div>
 
             <div class="flex items-center gap-x-3">
