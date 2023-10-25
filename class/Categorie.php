@@ -7,8 +7,8 @@
             parent::__construct();
         }
 
-        public function GetUsers(){
-            $instruccion = "CALL SP_USER()";
+        public function GetCategorie(){
+            $instruccion = "CALL SP_CATEGORIE()";
             
             $consulta = $this->_db->query($instruccion);
             $resultado = $consulta->fetch_all(MYSQLI_ASSOC);
@@ -17,14 +17,14 @@
                 echo "Error al consultar las noticias";
             }
             else{
-                $resultado->close();
-                $this->_db->close();
                 return $resultado;
+                $consulta->close();
+                $this->_db->close();
             }
         }
 
-        public function PostUsers($USER_NAME, $USER_FIRST_NAME, $USER_LAST_NAME){
-            $instruccion = "CALL SP_USER_NEW('". $USER_NAME ."','". $USER_FIRST_NAME ."','". $USER_LAST_NAME ."');";
+        public function PostCategorie($CAT_NAME, $CAT_COLOR){
+            $instruccion = "CALL SP_CATEGORIE_NEW('". $CAT_NAME ."','". $CAT_COLOR  ."');";
             
             $consulta = $this->_db->query($instruccion);
             $resultado = $consulta->fetch_all(MYSQLI_ASSOC);
@@ -33,9 +33,9 @@
                 echo "Error al consultar las noticias ";
             }
             else{
-                $resultado->close();
-                $this->_db->close();
                 return $resultado;
+                $consulta->close();
+                $this->_db->close();
             }
         }
     }

@@ -45,20 +45,36 @@
             </div>
           </fieldset>
 
+          <label for="">Fecha de compromiso</label>
           <input type="datetime-local" id="fecha-compromiso" required /><br />
           <label for="">Responsable</label>
           <select name="userResponse" id="userResponse" required>
             <option value="" disabled selected>--- Seleccione una ---</option>
             <?php
-            require_once("class/Users.php");
-            $objUsers = new users();
-            $listUser = $objUsers->GetUsers();
-            foreach ($listUser as $user) {
-              echo "<option value='" . $user['ID_USER'] . "'>" . $user['USER_LAST_NAME'] . " " . $user['USER_FIRST_NAME'] . "</option>";
-            }
+              require_once("class/Users.php");
+              $objUsers = new users();
+              $listUser = $objUsers->GetUsers();
+              foreach ($listUser as $user) {
+                echo "<option value='" . $user['ID_USER'] . "'>" . $user['USER_LAST_NAME'] . " " . $user['USER_FIRST_NAME'] . "</option>";
+              }
 
             ?>
           </select><br>
+
+          <label for="">Categorias</label>
+          <select name="taskCategorie" id="taskCategorie" required>
+            <option value="" disabled selected>--- Seleccione una ---</option>
+            <?php
+              require_once("class/Categorie.php");
+              $objCatego = new Categorie();
+              $listCatego = $objCatego->GetCategorie();
+              foreach ($listCatego as $Catego) {
+                echo "<option value='" . $Catego['ID_CATEGORIE'] . "'>" . $Catego['CAT_NAME'] ."</option>";
+              }
+
+            ?>
+          </select><br>
+
           <button type="button" onclick="agregarTarea()">Agregar Tarea</button>
         </form>
         <div id="lista-tareas"></div>
@@ -82,7 +98,36 @@
         <h2 class="font-bold text-xl text-white rounded-lg py-1 text-center bg-emerald-500">Terminada</h2>
       </div>
     </div>
+  </div>
 
+  <div>
+    <h3>Filtro por categorias</h3>
+    <?php
+      require_once("class/Categorie.php");
+      $objCatego = new Categorie();
+      $listCatego = $objCatego->GetCategorie();
+      foreach ($listCatego as $Catego) {
+        echo "<input type='checkbox' id='ckCategories' name='ckCategories' value='" . $Catego['ID_CATEGORIE'] ."' checked>\n";
+        echo "<label for='ckCategories'>" . $Catego['CAT_NAME'] ."</label><br>";
+      }
+    ?>
+    <button>Filtrar categorias</button>
+    <button>Agregar categorias</button>
+  </div>
+
+  <div>
+    <h3>Filtro por Usuarios</h3>
+    <?php
+      require_once("class/Users.php");
+      $objUsers = new users();
+      $listUser = $objUsers->GetUsers();
+      foreach ($listUser as $user) {
+        echo "<input type='checkbox' id='ckUser' name='ckUser' value='" . $user['ID_USER'] ."' checked>\n";
+        echo "<label for='ckUser'>" . $user['USER_LAST_NAME'] . " " . $user['USER_FIRST_NAME'] . "</label><br>";
+      }
+    ?>
+    <button>Filtrar Usuarios</button>
+    <button>Agregar Usuarios</button>
   </div>
 
   <script src="script.js"></script>
