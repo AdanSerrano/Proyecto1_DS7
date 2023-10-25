@@ -23,7 +23,7 @@
             }
             else{
                 return $resultado;
-                $resultado->close();
+                $consulta->close();
                 $this->_db->close();
             }
         }
@@ -39,9 +39,8 @@
             }
             else{
                 return $resultado;
-                $resultado->close();
+                $consulta->close();
                 $this->_db->close();
             }
         }
     }
-?>
