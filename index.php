@@ -158,7 +158,7 @@ if (array_key_exists('addTask', $_POST)) {
               echo "<div class='p-2'>";
               echo "<label class='text-base font-semibold text-gray-800'><b>" . $tasks['TASK_NAME'] . "</b></label><br>";
               echo "<label $style><b>Descrición: </b>" . $tasks['TASK_DESCRIPTION'] . "</label><br>";
-              echo "<label $style><b>Categorias: </b>" . $tasks['CAT_NAME'] . "</label><br>";
+              echo "<label $style>" . $tasks['CAT_NAME'] . "</label><br>";
               echo "<span class='text-base font-semibold text-gray-600 uppercase tracking-wide center' >" . $tasks['USER_NAME'] . "</span>";
               echo "</div>";
               echo "<div class='flex items-center justify-around px-2 py-2 bg-gray-100'>";
