@@ -1,3 +1,22 @@
+<?php
+  if(array_key_exists('addTask', $_POST))
+  {
+    $miArray = $_POST;
+
+    $titulo = $_POST['txtTitle'];
+    $descripcion = $_POST['descripcion'];
+    $estado = $_POST['ddlTaskState'];
+    $fechaCompromiso = $_POST['fechaCompromiso'];
+    $responsable = $_POST['userResponse'];
+    $categoria = $_POST['taskCategorie'];
+
+    require_once("class/Tasks.php");
+      $objTasks = new Tasks();
+      $result = $objTasks->PostTasks($titulo, $descripcion, $estado, $fechaCompromiso, $responsable, $categoria);
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -107,10 +126,15 @@
              $objTasks = new Tasks();
              $listTasks = $objTasks->GetTasks();
              foreach ($listTasks as $tasks) {
-                if($tasks['TASK_CATEGORIE_ID'] == 1){
-                  echo "<label for='ckCategories'>" . $tasks['TASK_NAME'] ."</label><br>";
-
-                  
+                if($tasks['TASK_STATE'] == 1){
+                  echo "<div>";
+                  echo "<label><b>" . $tasks['TASK_NAME'] ."</b></label><br>";
+                  echo "<label><b>Descrición: </b>" . $tasks['TASK_DESCRIPTION'] ."</label><br>";
+                  echo "<label><b>Categorias: </b>" . $tasks['CAT_NAME'] ."</label><br>";
+                  echo "<label><b>Fecha de compromiso: </b>" . $tasks['TASK_DATE'] ."</label><br>";            
+                  echo "<label><b>Responsable: </b>" . $tasks['USER_NAME'] ."</label><br>";            
+                  echo "</div>";     
+                  echo "<button>Modificar</button>";
                 }
              }
 
@@ -150,9 +174,6 @@
   <div>
     <h3>Filtro por Usuarios</h3>
     <?php
-      require_once("class/Users.php");
-      $objUsers = new users();
-      $listUser = $objUsers->GetUsers();
       foreach ($listUser as $user) {
         echo "<input type='checkbox' id='ckUser' name='ckUser' value='" . $user['ID_USER'] ."' checked>\n";
         echo "<label for='ckUser'>" . $user['USER_LAST_NAME'] . " " . $user['USER_FIRST_NAME'] . "</label><br>";
@@ -210,21 +231,4 @@
 </html>
 
 
-<?php
-  if(array_key_exists('addTask', $_POST))
-  {
-    $miArray = $_POST;
 
-    $titulo = $_POST['txtTitle'];
-    $descripcion = $_POST['descripcion'];
-    $estado = $_POST['ddlTaskState'];
-    $fechaCompromiso = $_POST['fechaCompromiso'];
-    $responsable = $_POST['userResponse'];
-    $categoria = $_POST['taskCategorie'];
-
-    require_once("class/Tasks.php");
-      $objTasks = new Tasks();
-      $result = $objTasks->PostTasks($titulo, $descripcion, $estado, $fechaCompromiso, $responsable, $categoria);
-  }
-
-?>
