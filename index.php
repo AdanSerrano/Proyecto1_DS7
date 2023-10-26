@@ -79,9 +79,9 @@ if (array_key_exists('addTask', $_POST)) {
             </select><br>
           </fieldset>
 
-          <label for="" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Fecha de
+          <label for="fechaCompromiso" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Fecha de
             compromiso</label>
-          <input type="datetime-local" name="fechaCompromiso" /><br />
+          <input type="datetime-local" id="fechaCompromiso" name="fechaCompromiso" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline mb-4">
           <label for="" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Responsable</label>
           <select name="userResponse" id="userResponse" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
             <option value="" disabled selected>--- Seleccione una ---</option>
@@ -189,37 +189,6 @@ if (array_key_exists('addTask', $_POST)) {
       </div>
     </article>
   </div>
-
-  <div>
-    <h3>Filtro por categorias</h3>
-    <?php
-    require_once("class/Categorie.php");
-    $objCatego = new Categorie();
-    $listCatego = $objCatego->GetCategorie();
-    foreach ($listCatego as $Catego) {
-      echo "<input type='checkbox' id='ckCategories' name='ckCategories' value='" . $Catego['ID_CATEGORIE'] . "' checked>\n";
-      echo "<label for='ckCategories'>" . $Catego['CAT_NAME'] . "</label><br>";
-    }
-    ?>
-    <button>Filtrar categorias</button>
-    <button>Agregar categorias</button>
-  </div>
-
-  <div>
-    <h3>Filtro por Usuarios</h3>
-    <?php
-    require_once("class/Users.php");
-    $objUsers = new users();
-    $listUser = $objUsers->GetUsers();
-    foreach ($listUser as $user) {
-      echo "<input type='checkbox' id='ckUser' name='ckUser' value='" . $user['ID_USER'] . "' checked>\n";
-      echo "<label for='ckUser'>" . $user['USER_LAST_NAME'] . " " . $user['USER_FIRST_NAME'] . "</label><br>";
-    }
-    ?>
-    <button>Filtrar Usuarios</button>
-    <button>Agregar Usuarios</button>
-  </div>
-
   </div>
 
   <script src="script.js"></script>
