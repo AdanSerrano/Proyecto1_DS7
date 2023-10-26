@@ -159,9 +159,6 @@
   <div>
     <h3>Filtro por categorias</h3>
     <?php
-      require_once("class/Categorie.php");
-      $objCatego = new Categorie();
-      $listCatego = $objCatego->GetCategorie();
       foreach ($listCatego as $Catego) {
         echo "<input type='checkbox' id='ckCategories' name='ckCategories' value='" . $Catego['ID_CATEGORIE'] ."' checked>\n";
         echo "<label for='ckCategories'>" . $Catego['CAT_NAME'] ."</label><br>";
