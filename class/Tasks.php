@@ -94,13 +94,13 @@
             // Agregar condiciones de filtro según los parámetros proporcionados
             $conditions = array();
             if ($categoria !== null) {
-                $conditions[] = "TA.TASK_CATEGORIE_ID = " . $categoria;
+                $conditions[] = "TA.TASK_CATEGORIE_ID = '" . $categoria. "' ";
             }
             if ($responsable !== null) {
-                $conditions[] = "TA.TASK_USER_ID = " . $responsable;
+                $conditions[] = "TA.TASK_USER_ID = ' " . $responsable. "' ";
             }
             if ($estado !== null) {
-                $conditions[] = "TA.TASK_STATE = " . $estado;
+                $conditions[] = "TA.TASK_STATE = ' " . $estado. "' ";
             }
         
             if (!empty($conditions)) {
