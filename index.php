@@ -17,6 +17,29 @@ if (array_key_exists('addTask', $_POST)) {
 
 ?>
 
+<?php
+require_once("class/Tasks.php");
+$objTasks = new Tasks(); // Asegúrate de crear una instancia de la clase Tasks
+$listTasks = $objTasks->GetTasks(); // Obtener todas las tareas
+
+// Lógica para procesar el formulario de filtrado
+if (array_key_exists('filtrar', $_POST)) {
+  // Obtener valores de filtro
+  $filtroCategoria = isset($_POST['filtroCategoria']) ? $_POST['filtroCategoria'] : null;
+  $filtroResponsable = isset($_POST['filtroResponsable']) ? $_POST['filtroResponsable'] : null;
+  $filtroEstado = isset($_POST['filtroEstado']) ? $_POST['filtroEstado'] : null;
+  
+
+  // Filtrar la lista de tareas
+  $listTasks = $objTasks->GetFilteredTasks($filtroCategoria, $filtroResponsable, $filtroEstado);
+} else {
+  // Si no se ha enviado el formulario de filtro, obtener todas las tareas
+  $listTasks = $objTasks->GetTasks();
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -51,6 +74,56 @@ if (array_key_exists('addTask', $_POST)) {
   <div class="py-2 px-1">
     <h1 class="font-bold text-4xl text-center py-5 bg-indigo-600 rounded-lg text-white">CheckList Tracker App</h1>
   </div>
+
+  <form id="filtroForm" class="mt-2 p-2 bg-gray-50 rounded-lg" action="index.php" method="post">
+  <!-- Otros campos de formulario -->
+
+  <!-- Agregar selector para categoría -->
+  <label for="filtroCategoria" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Filtrar por Categoría</label>
+  <select name="filtroCategoria" id="filtroCategoria" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+  <option value="" disabled selected>--- Todas ---</option>
+  
+    <?php
+    require_once("class/Categorie.php");
+    $objCatego = new Categorie();
+    $listCatego = $objCatego->GetCategorie();
+    foreach ($listCatego as $Catego) {
+      echo "<option value='" . $Catego['ID_CATEGORIE'] . "'>" . $Catego['CAT_NAME'] . "</option>";
+    }
+    ?>
+  </select><br>
+
+  <!-- Agregar selector para responsable -->
+  <label for="filtroResponsable" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Filtrar por Responsable</label>
+  <select name="filtroResponsable" id="filtroResponsable" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+  <option value="" disabled selected>--- Todos ---</option>
+  
+    <?php
+    require_once("class/Users.php");
+    $objUsers = new users();
+    $listUser = $objUsers->GetUsers();
+    foreach ($listUser as $user) {
+      echo "<option value='" . $user['ID_USER'] . "'>" . $user['USER_LAST_NAME'] . " " . $user['USER_FIRST_NAME'] . "</option>";
+    }
+    ?>
+  </select><br>
+  <!-- Agregar selector para estado -->
+  <label for="filtroEstado" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Filtrar por Estado</label>
+  <select name="filtroEstado" id="filtroEstado" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+  <option value="" disabled selected>--- Todos ---</option>
+  
+    <?php
+    require_once("class/Parameter.php");
+    $objParameter = new Parameter();
+    $listParameter = $objParameter->GetParameter("ESTADOS DE TAREAS");
+    foreach ($listParameter as $parameter) {
+      echo "<option value='" . $parameter['ID_PARAMETER'] . "'>" .  $parameter['PARA_NAME'] . "</option>";
+    }
+    ?>
+  </select><br>
+
+  <input type='submit' name='filtrar' value='Filtrar' class="w-full block bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+</form>
 
   <div class="flex flex-row">
     <section class="basis-1/4 rounded-lg">
