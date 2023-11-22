@@ -8,6 +8,7 @@ if (array_key_exists('addTask', $_POST)) {
   $fechaCompromiso = $_POST['fechaCompromiso'];
   $responsable = $_POST['userResponse'];
   $categoria = $_POST['taskCategorie'];
+  
 
   require_once("class/Tasks.php");
   $objTasks = new Tasks();
@@ -157,14 +158,14 @@ if (array_key_exists('addTask', $_POST)) {
               echo "<div class='flex flex-col bg-white rounded-lg shadow-lg overflow-hidden bg-black m-2'>";
               echo "<div class='p-2'>";
               echo "<label class='text-base font-semibold text-gray-800'><b>" . $tasks['TASK_NAME'] . "</b></label><br>";
-              echo "<label $style><b>Descrición: </b>" . $tasks['TASK_DESCRIPTION'] . "</label><br>";
+              echo "<label $style><b>Descripción: </b>" . $tasks['TASK_DESCRIPTION'] . "</label><br>";
               echo "<label $style>" . $tasks['CAT_NAME'] . "</label><br>";
               echo "<span class='text-base font-semibold text-gray-600 uppercase tracking-wide center' >" . $tasks['USER_NAME'] . "</span>";
               echo "</div>";
               echo "<div class='flex items-center justify-around px-2 py-2 bg-gray-100'>";
               echo $buttonEdit;
               echo $buttonModal;
-              echo "<button class='px-3 py-1 text-xs font-semibold text-gray-700 uppercase bg-gray-200 rounded-full bg-red-400'>eliminar</button>";
+              echo "<button data-task-id='" . $tasks['ID_TASK'] . "' class='delete-task-button px-3 py-1 text-xs font-semibold text-gray-700 uppercase bg-gray-200 rounded-full bg-red-400'>Eliminar</button>";
               echo "</div>";
               echo "</div>";
             }
@@ -206,7 +207,37 @@ if (array_key_exists('addTask', $_POST)) {
     botonCerrar.onclick = function() {
       modal.style.display = "none";
     }
-  </script>
+
+
+    var deleteButtons = document.querySelectorAll('.delete-task-button');
+    deleteButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        var taskId = button.getAttribute('data-task-id');
+
+        // Llamar a la función para eliminar la tarea y manejar la respuesta
+        deleteTask(taskId);
+      });
+    });
+
+    function deleteTask(taskId) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'deleteTask.php', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          // Si la eliminación fue exitosa, puedes realizar acciones adicionales si es necesario
+          console.log(xhr.responseText);
+          // Puedes, por ejemplo, ocultar la tarea eliminada del DOM
+          var deletedTaskElement = document.querySelector('[data-task-id="' + taskId + '"]').closest('.flex-col');
+          deletedTaskElement.remove();
+        } else {
+          // Manejar errores si es necesario
+          console.error('Error al eliminar la tarea.');
+        }
+      };
+      xhr.send('taskId=' + encodeURIComponent(taskId));
+    }
+</script>
 </body>
 
 </html>

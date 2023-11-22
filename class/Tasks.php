@@ -73,15 +73,15 @@
             $instruccion = "CALL SP_TASK_DELETE('" . $ID_TASK  . "');";
             
             $actualizar = $this->_db->query($instruccion);
-
+        
             if($actualizar){
-                return $actualizar;
-                $resactualizarultado->close();
                 $this->_db->close();
-            }
-            else{
-                echo "Error al insertar la tarea";
+                return true; // Éxito en la eliminación
+            } else {
+                echo "Error al eliminar la tarea: " . $this->_db->error; // Imprimir mensaje de error
+                return false; // Error en la eliminación
             }
         }
+        
     }
 ?>
